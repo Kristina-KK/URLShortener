@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Help</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Shortener service instructions</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10">
+            <h3 class="h3-precondition">Precondition</h3>
+            <p>Run WAR file using this command: <code>java -jar
+                url-shortener-0.0.1-SNAPSHOT.war</code></p>
+            <BR>
+            <p>It is recommended to use Postman for testing REST requests. Swagger UI is not implemented.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Step 1</h3>
+            <p>First endpoint call must be /account endpoint like in this example. Authorization is not required.</p>
+            <code>POST localhost:8080/account</code>
+            <p><br></p>
+            <code>Body example: {"accountId":"kristina"} </code>
+            <p><br>If account registration was successful, use these credentials (accountId and password)
+                in authorization header for calling another REST endpoints:
+                POST /register, GET /statistic/{accountId} and GET /redirect</p>
+            <code>Response example: {success: 'true', description: 'Your account is opened', password:
+                'xC345Fc0'}</code>
+            <p><br></p>
+            <p>It is not allowed to create multiple accounts with the same accountId. In that case exception will be
+                thrown.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Step 2</h3>
+            <p>Use credentials in authorization header and call endpoint POST /register to get short link for URL from
+                body. redirectType is optional and default is 302.</p>
+            <p>Validation is set to url and redirectType. URL must have prefix http:// or https:// and allowed values
+                for redirect type are 301 and 302.</p>
+            <code>POST localhost:8080/register</code>
+            <p><br></p>
+            <code>Body example: { url: 'http://www.google.com', redirectType : 301 } </code>
+            <p><br></p>
+            <code>Response example: { shortUrl: 'http://localhost:8080/b'}</code>
+            <p><br></p>
+            <p>It is not allowed to create multiple short URLs for the same long URL. In that case exception will be
+                thrown.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Step 3</h3>
+            <p>Use credentials in authorization header and call endpoint GET /{shortUrl}. You will be redirected to
+                registered original long url. It is assumed that only registered users will use Shortener service.</p>
+            <p>To see web page copy-paste shortUrl from POST /register response in your browser.</p>
+            <code>GET localhost:8080/{shortUrl}</code>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10">
+            <h3>Step 4</h3>
+            <p>Use credentials in authorization header and call endpoint GET /statistics/{accountId} to get statistic
+                for some accountId</p>
+            <p>There is no user restrictions. Any registered user account can see statistic for any accountId.</p>
+            <p>It is assumed that every user has role ADMIN in this little demo Shortener service.</p>
+            <code>GET localhost:8080/statistics/{accountId}</code>
+            <p><br></p>
+            <code>Response example: {
+                "https://www.google.com": 4,
+                "https://www.baeldung.com": 4
+                }</code>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+            <p><br></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
